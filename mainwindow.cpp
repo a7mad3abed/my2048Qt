@@ -5,12 +5,14 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    myBoard{new Board()}
 {
     setFocusPolicy(Qt::FocusPolicy::StrongFocus);
     ui->setupUi(this);
-    myBoard.initBoard();
+    myBoard->initBoard();
     drawBoard();
+    connect(ui->newGameButton, SIGNAL(clicked()), this, SLOT(newGame()));
 }
 
 MainWindow::~MainWindow()
@@ -84,19 +86,19 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
     case Qt::Key_Right:
-        myBoard.right();
+        myBoard->right();
         drawBoard();
         break;
     case Qt::Key_Left:
-        myBoard.left();
+        myBoard->left();
         drawBoard();
         break;
     case Qt::Key_Up:
-        myBoard.up();
+        myBoard->up();
         drawBoard();
         break;
     case Qt::Key_Down:
-        myBoard.down();
+        myBoard->down();
         drawBoard();
     }
 }
@@ -104,7 +106,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 void MainWindow::drawBoard()
 {
     std::vector<int> values;
-    std::vector<Cell> tempBoard = myBoard.exportBorad();
+    std::vector<Cell> tempBoard = myBoard->exportBorad();
 
     for (int i = 0; i<16; i++)
     {
@@ -144,8 +146,18 @@ void MainWindow::drawBoard()
     labelVal = QString::number(values[15]);
     setLabCol(ui->label_16, values[15]);
 
-    if(myBoard.gameIsOver){
+    if(myBoard->gameIsOver){
         ui->label_17->setText(QString("Game Over!"));
     } else ui->label_17->setText("");
-    ui->label->setText(QString("Score: ") + QString::number(myBoard.score));
+    ui->label->setText(QString("Score: ") + QString::number(myBoard->score));
+}
+
+void MainWindow::newGame()
+{
+    setFocusPolicy(Qt::StrongFocus);
+    myBoard = new Board();
+    myBoard->initBoard();
+    myBoard->score = 0;
+    myBoard->gameIsOver = false;
+    drawBoard();
 }

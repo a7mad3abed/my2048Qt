@@ -20,12 +20,16 @@ public:
 private:
     void setLabCol(QLabel *lab, int val);
     void drawBoard();
+
+protected slots:
+    void newGame();
+
 protected:
     void keyPressEvent(QKeyEvent *event);
 
 private:
     Ui::MainWindow *ui;
-    Board myBoard;
+    Board *myBoard;
 };
 
 #endif // MAINWINDOW_H
