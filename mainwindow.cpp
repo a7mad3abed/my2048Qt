@@ -147,7 +147,7 @@ void MainWindow::drawBoard()
     setLabCol(ui->label_16, values[15]);
 
     if(myBoard->gameIsOver){
-        ui->label_17->setText(QString("Game Over!"));
+        ui->label_17->setText(tr("Game Over!"));
     } else ui->label_17->setText("");
     ui->label->setText(QString("Score: ") + QString::number(myBoard->score));
 }
