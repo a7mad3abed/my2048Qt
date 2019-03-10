@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "board.h"
+
+// included to enable the direction keys
 #include <QKeyEvent>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -8,10 +10,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     myBoard{new Board()}
 {
+    // setting focus to the main window. Otherwise the keyboard keys do nothing
     setFocusPolicy(Qt::FocusPolicy::StrongFocus);
     ui->setupUi(this);
     myBoard->initBoard();
     drawBoard();
+
+    // the missing point here was the &MainWindow before newGame pointer
     connect(ui->newGameButton, &QPushButton::clicked, this, &MainWindow::newGame);
 }
 
@@ -21,6 +26,7 @@ MainWindow::~MainWindow()
     delete myBoard;
 }
 
+// a fucktion that takes a QLabel pointer and an integer as arguments. According to the int value the text and the color of the label will be setup
 void MainWindow::setLabCol(QLabel *lab, int val)
 {
     switch (val) {
@@ -106,7 +112,11 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
 void MainWindow::drawBoard()
 {
+
+    // we make a vector of integers to store the values of the cells from the temporary board
     std::vector<int> values;
+
+    // we use the public function exportBoard to get a copy of the current board status to work with
     std::vector<Cell> tempBoard = myBoard->exportBorad();
 
     for (int i = 0; i<16; i++)
@@ -155,7 +165,6 @@ void MainWindow::drawBoard()
 
 void MainWindow::newGame()
 {
-    setFocusPolicy(Qt::StrongFocus);
     myBoard = new Board();
     myBoard->initBoard();
     myBoard->score = 0;
