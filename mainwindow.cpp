@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete myBoard;
 }
 
 void MainWindow::setLabCol(QLabel *lab, int val)
