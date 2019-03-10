@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     myBoard->initBoard();
     drawBoard();
-    connect(ui->newGameButton, SIGNAL(clicked()), this, SLOT(newGame()));
+    connect(ui->newGameButton, &QPushButton::clicked, this, &MainWindow::newGame);
 }
 
 MainWindow::~MainWindow()
